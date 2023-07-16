@@ -1,14 +1,14 @@
 import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import authReducer from '../components/login/authSlice';
-// import assignmentSlice, {
-//   getAssignments,
-// } from '../components/assignments/assignmentSlice';
-// import submissionSlice from '../components/submissions/submissionSlice';
+import assignmentSlice, {
+  getAssignments,
+} from '../components/assignments/assignmentSlice';
+import submissionSlice from '../components/submissions/submissionSlice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  // assignment: assignmentSlice,
-  // submission: submissionSlice,
+  assignment: assignmentSlice,
+  submission: submissionSlice,
 });
 
 export const store = configureStore({
@@ -20,4 +20,4 @@ export const store = configureStore({
     }),
 });
 
-// store.dispatch(getAssignments());
+store.dispatch(getAssignments());

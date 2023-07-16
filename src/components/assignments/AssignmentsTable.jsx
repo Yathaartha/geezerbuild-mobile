@@ -1,49 +1,96 @@
-import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React, {useEffect, useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {getAssignments} from './assignmentSlice';
+import {DataTable} from 'react-native-paper';
+import AssignmentModal from './AssignmentModal';
 
 const AssignmentsTable = () => {
+  const dispatch = useDispatch();
+  const {list} = useSelector(state => state.assignment);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedAssignment, setSelectedAssignment] = useState(list[0]);
+
+  const openModal = () => {
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  useEffect(() => {
+    dispatch(getAssignments());
+  }, []);
+
+  const renderRows = () => {
+    if (list.length > 0) {
+      return list.map((assignment, index) => {
+        return (
+          <DataTable.Row key={index}>
+            <DataTable.Cell
+              textStyle={{fontWeight: 'bold', color: '#000'}}
+              onPress={() => {
+                setSelectedAssignment(assignment);
+                openModal();
+              }}>
+              {assignment.title}
+            </DataTable.Cell>
+
+            <DataTable.Cell numberOfLines={2}>
+              {assignment.detail}
+            </DataTable.Cell>
+
+            <DataTable.Cell>
+              {new Date(assignment.dueDate).toLocaleDateString()}
+            </DataTable.Cell>
+
+            <DataTable.Cell
+              style={styles.btn}
+              textStyle={{color: '#fff'}}
+              onPress={() => {}}>
+              Submit
+            </DataTable.Cell>
+          </DataTable.Row>
+        );
+      });
+    }
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <Text style={styles.header}>Title</Text>
-        <Text style={styles.header}>Detail</Text>
-        <Text style={styles.header}>Due Date</Text>
-        <Text style={styles.header}>Action</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.cell}>John Doe</Text>
-        <Text style={styles.cell}>25</Text>
-        <Text style={styles.cell}>New York</Text>
-        <Text style={styles.cell}>New York</Text>
-      </View>
-      <View style={styles.row}>
-        <Text style={styles.cell}>Jane Smith</Text>
-        <Text style={styles.cell}>30</Text>
-        <Text style={styles.cell}>San Francisco</Text>
-        <Text style={styles.cell}>San Francisco</Text>
-      </View>
-      {/* Add more rows as needed */}
-    </View>
+    <DataTable>
+      <DataTable.Header style={styles.tableHeader}>
+        <DataTable.Title>Title</DataTable.Title>
+        <DataTable.Title>Details</DataTable.Title>
+        <DataTable.Title>Due Date</DataTable.Title>
+        <DataTable.Title>Action</DataTable.Title>
+      </DataTable.Header>
+      {renderRows()}
+      <AssignmentModal
+        visible={modalVisible}
+        closeModal={closeModal}
+        assignment={selectedAssignment}
+      />
+    </DataTable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+  tableHeader: {
+    backgroundColor: '#DCDCDC',
   },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  header: {
-    fontWeight: 'bold',
-    flex: 1,
-  },
-  cell: {
+  btn: {
+    backgroundColor: '#78B7BB',
+    textAlign: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     flex: 1,
   },
 });
