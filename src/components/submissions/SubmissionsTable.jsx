@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {Alert, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {DataTable} from 'react-native-paper';
-import {getSubmissions} from './submissionSlice';
+import {getSubmissions, removeSubmission} from './submissionSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SubmissionsTable = () => {
@@ -15,20 +15,25 @@ const SubmissionsTable = () => {
     async function fetchData() {
       const value = await AsyncStorage.getItem('userId');
       setUserId(value);
-      dispatch(getSubmissions({studentId: userId}));
     }
     fetchData();
   }, []);
 
+  useEffect(() => {
+    dispatch(getSubmissions({studentId: userId}));
+  }, [userId]);
+
   const deleteSubmission = async () => {
+    const response = await dispatch(
+      removeSubmission({assignmentId: selectedSubmission.id}),
+    );
     if (response) {
       await dispatch(getSubmissions({studentId: userId}));
-      handleOk();
     }
   };
 
   const createAlert = () => {
-    Alert.alert('Are you sure you want to remove submission?', [
+    Alert.alert('Are you sure you want to remove submission?', '', [
       {
         text: 'Cancel',
         onPress: () => console.log('Cancel Pressed'),
@@ -36,15 +41,6 @@ const SubmissionsTable = () => {
       },
       {text: 'OK', onPress: () => deleteSubmission()},
     ]);
-  };
-
-  const handleDownload = async file => {
-    const fileURL = URL.createObjectURL(file);
-
-    const supported = await Linking.canOpenURL(fileURL);
-    if (supported) {
-      await Linking.openURL(url);
-    }
   };
 
   const renderRows = () => {
@@ -67,14 +63,13 @@ const SubmissionsTable = () => {
               ).toLocaleDateString()}
             </DataTable.Cell>
 
-            <DataTable.Cell onPress={() => handleDownload(submission.file)}>
-              Download
-            </DataTable.Cell>
-
             <DataTable.Cell
               style={styles.btn}
               textStyle={{color: '#fff'}}
-              onPress={() => createAlert()}>
+              onPress={() => {
+                setSelectedSubmission(submission);
+                createAlert();
+              }}>
               Remove
             </DataTable.Cell>
           </DataTable.Row>
@@ -88,7 +83,6 @@ const SubmissionsTable = () => {
       <DataTable.Header style={styles.tableHeader}>
         <DataTable.Title>Title</DataTable.Title>
         <DataTable.Title>Due Date</DataTable.Title>
-        <DataTable.Title>File</DataTable.Title>
         <DataTable.Title>Action</DataTable.Title>
       </DataTable.Header>
       {renderRows()}

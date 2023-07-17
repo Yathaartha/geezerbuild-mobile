@@ -8,9 +8,13 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+import {submitAssignment} from './assignmentSlice';
+import {useDispatch} from 'react-redux';
 
 const AssignmentModal = ({visible, closeModal, assignment, navigation}) => {
   const [file, setFile] = useState(null);
+  const dispatch = useDispatch();
 
   const handleFileUpload = async () => {
     try {
@@ -70,9 +74,11 @@ const AssignmentModal = ({visible, closeModal, assignment, navigation}) => {
               ).toLocaleDateString()}
             </Text>
           </View>
-          <Button title="Upload File" onPress={handleFileUpload} />
+          <View style={{marginVertical: 10}}>
+            <Button title="Upload File" onPress={handleFileUpload} />
+          </View>
           <View>
-            <TouchableOpacity onPress={closeModal}>
+            <TouchableOpacity onPress={() => handleSubmit()}>
               <Text style={styles.closeBtn}>Submit</Text>
             </TouchableOpacity>
           </View>

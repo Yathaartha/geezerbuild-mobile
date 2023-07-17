@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import {useNavigation, DrawerActions} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const DrawerContent = () => {
   const navigation = useNavigation();
@@ -25,12 +26,27 @@ const DrawerContent = () => {
 
   return (
     <View style={{flex: 1, paddingTop: 20}}>
-      <Text>Drawer Content</Text>
-      <Button title="Home" onPress={goToHome} />
-      <Button title="Submissions" onPress={goToSubmissions} />
-      <Button title="Logout" onPress={handleLogout} />
+      <Text style={{fontSize: 20, textAlign: 'center', marginVertical: 15}}>
+        Drawer Content
+      </Text>
+      <TouchableOpacity onPress={goToHome}>
+        <Text style={styles.navItem}>Home</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={goToSubmissions}>
+        <Text style={styles.navItem}>Submissions</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleLogout}>
+        <Text style={styles.navItem}>Logout</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  navItem: {
+    padding: 10,
+    backgroundColor: 'transparent',
+  },
+});
 
 export default DrawerContent;

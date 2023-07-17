@@ -1,11 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAssignments} from './assignmentSlice';
 import {DataTable} from 'react-native-paper';
@@ -34,12 +28,7 @@ const AssignmentsTable = ({navigation}) => {
       return list.map((assignment, index) => {
         return (
           <DataTable.Row key={index}>
-            <DataTable.Cell
-              textStyle={{fontWeight: 'bold', color: '#000'}}
-              onPress={() => {
-                setSelectedAssignment(assignment);
-                openModal();
-              }}>
+            <DataTable.Cell textStyle={{fontWeight: 'bold', color: '#000'}}>
               {assignment.title}
             </DataTable.Cell>
 
@@ -54,7 +43,10 @@ const AssignmentsTable = ({navigation}) => {
             <DataTable.Cell
               style={styles.btn}
               textStyle={{color: '#fff'}}
-              onPress={() => {}}>
+              onPress={() => {
+                setSelectedAssignment(assignment);
+                openModal();
+              }}>
               Submit
             </DataTable.Cell>
           </DataTable.Row>

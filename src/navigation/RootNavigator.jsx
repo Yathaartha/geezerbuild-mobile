@@ -1,6 +1,6 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from 'react-native-screens/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import DrawerContent from './DrawerContent';
@@ -40,7 +40,7 @@ function RootNavigator() {
       <Stack.Navigator
         initialRouteName="Login"
         screenOptions={{headerShown: false}}>
-        <Stack.Screen name="Login" component={LoginStack} />
+        <Stack.Screen name="Auth" component={LoginStack} />
         <Stack.Screen name="Drawer" component={DrawerNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
