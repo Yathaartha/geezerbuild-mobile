@@ -35,10 +35,10 @@ const LoginForm = ({navigation}) => {
     try {
       const response = await dispatch(loginAsync({username, password}));
       if (response.payload?.data) {
-        await AsyncStorage.setItem('token', response.payload.data.token);
+        await AsyncStorage.setItem('token', response.payload.data.accessToken);
         await AsyncStorage.setItem(
           'userId',
-          JSON.stringify(response.payload.data.user),
+          JSON.stringify(response.payload.data.dataValues.id),
         );
         navigation.navigate('Home');
         setError('');
