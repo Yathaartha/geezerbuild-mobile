@@ -10,14 +10,20 @@ const AssignmentModal = ({visible, closeModal, assignment}) => {
       transparent={true}>
       <View style={styles.container}>
         <View style={styles.content}>
-          <Text style={styles.title}>{assignment.title}</Text>
+          <Text style={styles.title}>
+            {assignment ? assignment.title : '-'}
+          </Text>
           <View style={styles.dataWrap}>
             <Text style={styles.label}>Details:</Text>
-            <Text>{assignment.detail}</Text>
+            <Text>{assignment ? assignment.detail : '-'}</Text>
           </View>
           <View style={styles.dataWrap}>
             <Text style={styles.label}>Due Date:</Text>
-            <Text>{new Date(assignment.dueDate).toLocaleDateString()}</Text>
+            <Text>
+              {new Date(
+                assignment ? assignment.dueDate : new Date(),
+              ).toLocaleDateString()}
+            </Text>
           </View>
           <View>
             <TouchableOpacity onPress={closeModal}>
