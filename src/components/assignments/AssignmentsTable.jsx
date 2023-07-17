@@ -11,7 +11,7 @@ import {getAssignments} from './assignmentSlice';
 import {DataTable} from 'react-native-paper';
 import AssignmentModal from './AssignmentModal';
 
-const AssignmentsTable = () => {
+const AssignmentsTable = ({navigation}) => {
   const dispatch = useDispatch();
   const {list} = useSelector(state => state.assignment);
   const [modalVisible, setModalVisible] = useState(false);
@@ -76,6 +76,7 @@ const AssignmentsTable = () => {
         visible={modalVisible}
         closeModal={closeModal}
         assignment={selectedAssignment}
+        navigation={navigation}
       />
     </DataTable>
   );

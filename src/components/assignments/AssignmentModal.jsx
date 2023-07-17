@@ -1,7 +1,52 @@
-import React from 'react';
-import {Modal, Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {useState} from 'react';
+import {
+  Modal,
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 
-const AssignmentModal = ({visible, closeModal, assignment}) => {
+const AssignmentModal = ({visible, closeModal, assignment, navigation}) => {
+  const [file, setFile] = useState(null);
+
+  const handleFileUpload = async () => {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      // Process the selected file
+      console.log('Selected file:', res);
+      setFile(res);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        // User cancelled the picker
+        console.log('File picker cancelled.');
+      } else {
+        // Error occurred while picking the file
+        console.log('Error:', err);
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    const userId = await AsyncStorage.getItem('userId');
+    const response = await dispatch(
+      submitAssignment({
+        file: file,
+        userId: userId,
+        assignmentId: assignment.id,
+      }),
+    );
+
+    if (response) {
+      closeModal();
+      navigation.navigate('Drawer', {screen: 'Submissions'});
+    }
+  };
+
   return (
     <Modal
       visible={visible}
@@ -24,6 +69,12 @@ const AssignmentModal = ({visible, closeModal, assignment}) => {
                 assignment ? assignment.dueDate : new Date(),
               ).toLocaleDateString()}
             </Text>
+          </View>
+          <Button title="Upload File" onPress={handleFileUpload} />
+          <View>
+            <TouchableOpacity onPress={closeModal}>
+              <Text style={styles.closeBtn}>Submit</Text>
+            </TouchableOpacity>
           </View>
           <View>
             <TouchableOpacity onPress={closeModal}>

@@ -2,11 +2,11 @@ import React from 'react';
 import {Text, View, ScrollView, StyleSheet} from 'react-native';
 import AssignmentsTable from '../../components/assignments/AssignmentsTable';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
     <ScrollView>
       <Text style={styles.head}>Assignments List</Text>
-      <AssignmentsTable />
+      <AssignmentsTable navigation={navigation} />
     </ScrollView>
   );
 };

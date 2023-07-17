@@ -40,7 +40,7 @@ const LoginForm = ({navigation}) => {
           'userId',
           JSON.stringify(response.payload.data.dataValues.id),
         );
-        navigation.navigate('Home');
+        navigation.navigate('Drawer', {screen: 'Home'});
         setError('');
       } else {
         setError('Invalid username or password');
