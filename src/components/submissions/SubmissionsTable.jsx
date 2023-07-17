@@ -22,15 +22,8 @@ const SubmissionsTable = () => {
 
   const deleteSubmission = async () => {
     if (response) {
-      toast('Assignment Deleted', {
-        type: 'success',
-      });
       await dispatch(getSubmissions({studentId: userId}));
       handleOk();
-    } else {
-      toast('Assignment Deletion Failed', {
-        type: 'error',
-      });
     }
   };
 

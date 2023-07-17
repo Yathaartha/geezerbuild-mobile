@@ -24,6 +24,7 @@ import LoginScreen from './src/screens/auth/LoginScreen';
 import SubmissionsScreen from './src/screens/submissions/SubmissionsScreen';
 import {PaperProvider} from 'react-native-paper';
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import RootNavigator from './src/navigation/RootNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -31,13 +32,14 @@ function App() {
   return (
     <Provider store={store}>
       <PaperProvider>
-        <NavigationContainer>
+        {/* <NavigationContainer>
           <Drawer.Navigator>
             <Drawer.Screen name="Home" component={HomeScreen} />
-            <Drawer.Screen name="Login" component={LoginScreen} />
             <Drawer.Screen name="Submissions" component={SubmissionsScreen} />
+            <Drawer.Screen name="Logout" component={LoginScreen} />
           </Drawer.Navigator>
-        </NavigationContainer>
+        </NavigationContainer> */}
+        <RootNavigator />
       </PaperProvider>
     </Provider>
   );
