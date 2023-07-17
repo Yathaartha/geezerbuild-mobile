@@ -1,6 +1,6 @@
 # Geezerbuild School Mobile App
 
-![Home Screen](homeScreen.jpg)
+![Home Screen](homeScreen.png)
 
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli) built for Geezerbuild School mobile app.
 
